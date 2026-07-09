@@ -1,5 +1,6 @@
 package com.management.employee_manager.model;
 
+import com.management.employee_manager.dto.DepartmentRequestDto;
 import jakarta.persistence.*;
 
 @Entity
@@ -20,6 +21,8 @@ public class Department {
         this.name = name;
         this.description = description;
     }
+
+
 
     public void setName(String name) {
         this.name = name;
