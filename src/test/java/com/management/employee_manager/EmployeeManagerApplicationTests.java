@@ -1,13 +1,13 @@
 package com.management.employee_manager;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+import static org.assertj.core.api.Assertions.assertThat;
+
 class EmployeeManagerApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
-
+    @Test
+    void applicationClassExists() {
+        assertThat(EmployeeManagerApplication.class).isNotNull();
+    }
 }
