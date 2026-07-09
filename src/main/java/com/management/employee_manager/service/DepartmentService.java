@@ -6,6 +6,9 @@ import com.management.employee_manager.model.Department;
 import com.management.employee_manager.repository.DepartmentRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class DepartmentService {
 private final DepartmentRepository departmentRepository;
@@ -23,6 +26,16 @@ private final DepartmentRepository departmentRepository;
                 savedDepartment.getName(),
                 savedDepartment.getDescription()
         );
+    }
+    public List<DepartmentResponseDto> getAllDepartments(){
+        List<Department> departments = departmentRepository.findAll();
+        List<DepartmentResponseDto> departmentResponseDtos = new ArrayList<>();
+        for ( Department department : departments){
+            departmentResponseDtos.add(new DepartmentResponseDto(department.getId(),department.getName(),department.getDescription()));
+        }
+
+        return departmentResponseDtos;
+
     }
 }
 
