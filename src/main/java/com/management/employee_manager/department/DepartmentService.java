@@ -10,25 +10,21 @@ import java.util.List;
 @Service
 public class DepartmentService {
     private final DepartmentRepository departmentRepository;
-
+    private final DepartmentMapper departmentMapper;
 
 
     public DepartmentResponseDto createDepartment(DepartmentRequestDto requestDto) {
-        Department department = new Department(requestDto.getName(), requestDto.getDescription());
+        Department department = departmentMapper.toEntity(requestDto);
         Department savedDepartment = departmentRepository.save(department);
 
-        return new DepartmentResponseDto(
-                savedDepartment.getId(),
-                savedDepartment.getName(),
-                savedDepartment.getDescription()
-        );
+        return departmentMapper.toResponseDto(savedDepartment);
     }
 
     public List<DepartmentResponseDto> getAllDepartments() {
         List<Department> departments = departmentRepository.findAll();
         List<DepartmentResponseDto> departmentResponseDtos = new ArrayList<>();
         for (Department department : departments) {
-            departmentResponseDtos.add(new DepartmentResponseDto(department.getId(), department.getName(), department.getDescription()));
+            departmentResponseDtos.add(departmentMapper.toResponseDto(department));
         }
 
         return departmentResponseDtos;
@@ -38,11 +34,7 @@ public class DepartmentService {
 
     public DepartmentResponseDto getDepartmentById(Long id) {
         Department department = departmentRepository.findById(id).orElseThrow();
-        return new DepartmentResponseDto(
-                department.getId(),
-                department.getName(),
-                department.getDescription()
-        );
+        return departmentMapper.toResponseDto(department);
 
 
     }
@@ -51,7 +43,7 @@ public class DepartmentService {
         department.setDescription(requestDto.getDescription());
         department.setName(requestDto.getName());
         Department updatedDepartment = departmentRepository.save(department);
-        return new DepartmentResponseDto(updatedDepartment.getId(),updatedDepartment.getName(),updatedDepartment.getDescription());
+        return departmentMapper.toResponseDto(updatedDepartment);
     }
 
     public void deleteDepartment(Long id){
@@ -61,6 +53,5 @@ public class DepartmentService {
 
 
 }
-
 
 

@@ -1,0 +1,63 @@
+package com.management.employee_manager.employee;
+
+import com.management.employee_manager.department.Department;
+import com.management.employee_manager.department.DepartmentRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class EmployeeService {
+
+    private final EmployeeRepository employeeRepository;
+    private final DepartmentRepository departmentRepository;
+    private final EmployeeMapper employeeMapper;
+
+    public EmployeeResponseDto createEmployee(EmployeeRequestDto employeeRequestDto) {
+        Department department = departmentRepository.findById(employeeRequestDto.getDepartmentId()).orElseThrow();
+        Employee employee = employeeMapper.toEntity(employeeRequestDto, department);
+        Employee createdEmployee = employeeRepository.save(employee);
+        return employeeMapper.toResponseDto(createdEmployee);
+
+    }
+
+    public List<EmployeeResponseDto> getAllEmployees() {
+        List<Employee> employees = employeeRepository.findAll();
+        List<EmployeeResponseDto> employeeResponseDtos = new ArrayList<>();
+
+        for (Employee employee : employees) {
+            employeeResponseDtos.add(employeeMapper.toResponseDto(employee));
+        }
+
+        return employeeResponseDtos;
+    }
+
+    public EmployeeResponseDto getEmployeeById(Long id) {
+        Employee employee = employeeRepository.findById(id).orElseThrow();
+        return employeeMapper.toResponseDto(employee);
+    }
+
+    public EmployeeResponseDto updateEmployee(Long id, EmployeeRequestDto employeeRequestDto) {
+        Employee employee = employeeRepository.findById(id).orElseThrow();
+        Department department = departmentRepository.findById(employeeRequestDto.getDepartmentId()).orElseThrow();
+
+        employee.setFirstName(employeeRequestDto.getFirstName());
+        employee.setLastName(employeeRequestDto.getLastName());
+        employee.setEmail(employeeRequestDto.getEmail());
+        employee.setJobTitle(employeeRequestDto.getJobTitle());
+        employee.setSalary(employeeRequestDto.getSalary());
+        employee.setDepartment(department);
+
+        Employee updatedEmployee = employeeRepository.save(employee);
+        return employeeMapper.toResponseDto(updatedEmployee);
+    }
+
+    public void deleteEmployee(Long id) {
+        Employee employee = employeeRepository.findById(id).orElseThrow();
+        employeeRepository.delete(employee);
+    }
+
+}
