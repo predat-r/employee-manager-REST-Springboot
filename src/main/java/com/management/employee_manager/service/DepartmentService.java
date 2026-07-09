@@ -4,19 +4,18 @@ import com.management.employee_manager.dto.DepartmentRequestDto;
 import com.management.employee_manager.dto.DepartmentResponseDto;
 import com.management.employee_manager.model.Department;
 import com.management.employee_manager.repository.DepartmentRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
+@RequiredArgsConstructor
 @Service
 public class DepartmentService {
     private final DepartmentRepository departmentRepository;
 
-    public DepartmentService(DepartmentRepository departmentRepository) {
-        this.departmentRepository = departmentRepository;
-    }
+
 
     public DepartmentResponseDto createDepartment(DepartmentRequestDto requestDto) {
         Department department = new Department(requestDto.getName(), requestDto.getDescription());
