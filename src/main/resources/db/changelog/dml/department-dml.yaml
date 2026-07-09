@@ -1,0 +1,34 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-default-departments
+      author: haris
+      changes:
+        - insert:
+            tableName: departments
+            columns:
+              - column:
+                  name: name
+                  value: HR
+              - column:
+                  name: description
+                  value: Human Resources department
+
+        - insert:
+            tableName: departments
+            columns:
+              - column:
+                  name: name
+                  value: Engineering
+              - column:
+                  name: description
+                  value: Software development department
+
+        - insert:
+            tableName: departments
+            columns:
+              - column:
+                  name: name
+                  value: Finance
+              - column:
+                  name: description
+                  value: Finance and accounting department
