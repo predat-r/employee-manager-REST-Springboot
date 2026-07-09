@@ -3,7 +3,6 @@ package com.management.employee_manager.controller;
 import com.management.employee_manager.dto.DepartmentRequestDto;
 import com.management.employee_manager.dto.DepartmentResponseDto;
 import com.management.employee_manager.service.DepartmentService;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,5 +43,11 @@ public class DepartmentController {
     public ResponseEntity<DepartmentResponseDto> updateDepartment(@PathVariable Long id,@RequestBody DepartmentRequestDto departmentRequestDto){
         DepartmentResponseDto departmentResponseDto = departmentService.updateDepartment(id,departmentRequestDto);
         return ResponseEntity.ok().body(departmentResponseDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteDepartment(@PathVariable Long id){
+        departmentService.deleteDepartment(id);
+        return ResponseEntity.noContent().build();
     }
 }

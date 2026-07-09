@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class DepartmentService {
@@ -57,6 +57,11 @@ public class DepartmentService {
         department.setName(requestDto.getName());
         Department updatedDepartment = departmentRepository.save(department);
         return new DepartmentResponseDto(updatedDepartment.getId(),updatedDepartment.getName(),updatedDepartment.getDescription());
+    }
+
+    public void deleteDepartment(Long id){
+        Department department = departmentRepository.findById(id).orElseThrow();
+        departmentRepository.delete(department);
     }
 
 
