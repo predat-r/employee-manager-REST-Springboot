@@ -1,4 +1,4 @@
-package com.management.employee_manager.model;
+package com.management.employee_manager.department;
 
 import jakarta.persistence.*;
 import lombok.Getter;

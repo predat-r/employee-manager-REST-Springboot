@@ -1,8 +1,5 @@
-package com.management.employee_manager.controller;
+package com.management.employee_manager.department;
 
-import com.management.employee_manager.dto.DepartmentRequestDto;
-import com.management.employee_manager.dto.DepartmentResponseDto;
-import com.management.employee_manager.service.DepartmentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

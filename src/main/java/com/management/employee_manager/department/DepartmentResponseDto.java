@@ -1,4 +1,4 @@
-package com.management.employee_manager.dto;
+package com.management.employee_manager.department;
 
 
 import lombok.AllArgsConstructor;

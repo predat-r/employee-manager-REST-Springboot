@@ -1,9 +1,5 @@
-package com.management.employee_manager.service;
+package com.management.employee_manager.department;
 
-import com.management.employee_manager.dto.DepartmentRequestDto;
-import com.management.employee_manager.dto.DepartmentResponseDto;
-import com.management.employee_manager.model.Department;
-import com.management.employee_manager.repository.DepartmentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
