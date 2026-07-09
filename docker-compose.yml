@@ -1,0 +1,6 @@
+services:
+  spring-boot-admin:
+    image: codecentric/spring-boot-admin:latest
+    container_name: spring-boot-admin
+    ports:
+      - "9090:8080"
