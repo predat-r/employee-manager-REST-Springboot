@@ -5,3 +5,5 @@ databaseChangeLog:
       file: db/changelog/ddl/employee-ddl.yaml
   - include:
       file: db/changelog/dml/department-dml.yaml
+  - include:
+      file: db/changelog/dml/employee-dml.yaml

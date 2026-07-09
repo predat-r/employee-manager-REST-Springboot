@@ -1,0 +1,70 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-default-employees
+      author: haris
+      changes:
+        - insert:
+            tableName: employees
+            columns:
+              - column:
+                  name: first_name
+                  value: Ali
+              - column:
+                  name: last_name
+                  value: Khan
+              - column:
+                  name: email
+                  value: ali.khan@example.com
+              - column:
+                  name: job_title
+                  value: Backend Developer
+              - column:
+                  name: salary
+                  valueNumeric: 150000.00
+              - column:
+                  name: department_id
+                  valueNumeric: 2
+
+        - insert:
+            tableName: employees
+            columns:
+              - column:
+                  name: first_name
+                  value: Sara
+              - column:
+                  name: last_name
+                  value: Ahmed
+              - column:
+                  name: email
+                  value: sara.ahmed@example.com
+              - column:
+                  name: job_title
+                  value: HR Manager
+              - column:
+                  name: salary
+                  valueNumeric: 180000.00
+              - column:
+                  name: department_id
+                  valueNumeric: 1
+
+        - insert:
+            tableName: employees
+            columns:
+              - column:
+                  name: first_name
+                  value: Hamza
+              - column:
+                  name: last_name
+                  value: Malik
+              - column:
+                  name: email
+                  value: hamza.malik@example.com
+              - column:
+                  name: job_title
+                  value: Finance Analyst
+              - column:
+                  name: salary
+                  valueNumeric: 120000.00
+              - column:
+                  name: department_id
+                  valueNumeric: 3
