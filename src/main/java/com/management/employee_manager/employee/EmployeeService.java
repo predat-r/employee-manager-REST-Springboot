@@ -1,5 +1,6 @@
 package com.management.employee_manager.employee;
 
+import com.management.employee_manager.common.exception.DuplicateResourceException;
 import com.management.employee_manager.department.Department;
 import com.management.employee_manager.department.DepartmentRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,9 @@ public class EmployeeService {
     private final EmployeeMapper employeeMapper;
 
     public EmployeeResponseDto createEmployee(EmployeeRequestDto employeeRequestDto) {
+        if (employeeRepository.existsByEmail(employeeRequestDto.getEmail())) {
+            throw new DuplicateResourceException("Employee with this email already exists");
+        }
         Department department = departmentRepository.findById(employeeRequestDto.getDepartmentId()).orElseThrow();
         Employee employee = employeeMapper.toEntity(employeeRequestDto, department);
         Employee createdEmployee = employeeRepository.save(employee);

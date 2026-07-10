@@ -1,5 +1,6 @@
 package com.management.employee_manager.department;
 
+import com.management.employee_manager.common.exception.DuplicateResourceException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,9 @@ public class DepartmentService {
 
 
     public DepartmentResponseDto createDepartment(DepartmentRequestDto requestDto) {
+        if (departmentRepository.existsByNameIgnoreCase(requestDto.getName())) {
+            throw new DuplicateResourceException("Department with this name already exists");
+        }
         Department department = departmentMapper.toEntity(requestDto);
         Department savedDepartment = departmentRepository.save(department);
 
