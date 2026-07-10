@@ -4,6 +4,7 @@ import com.management.employee_manager.department.Department;
 import com.management.employee_manager.department.DepartmentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,7 @@ public class EmployeeService {
 
     }
 
+    @Transactional(readOnly = true)
     public List<EmployeeResponseDto> getAllEmployees() {
         List<Employee> employees = employeeRepository.findAll();
         List<EmployeeResponseDto> employeeResponseDtos = new ArrayList<>();
@@ -34,7 +36,7 @@ public class EmployeeService {
 
         return employeeResponseDtos;
     }
-
+    @Transactional(readOnly = true)
     public EmployeeResponseDto getEmployeeById(Long id) {
         Employee employee = employeeRepository.findById(id).orElseThrow();
         return employeeMapper.toResponseDto(employee);
