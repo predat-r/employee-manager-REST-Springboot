@@ -20,5 +20,4 @@ public class DepartmentRequestDto {
     private String description;
 
 
-
 }

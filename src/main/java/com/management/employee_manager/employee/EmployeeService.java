@@ -24,7 +24,7 @@ public class EmployeeService {
         if (employeeRepository.existsByEmail(employeeRequestDto.getEmail())) {
             throw new DuplicateResourceException("Employee with this email already exists");
         }
-        Department department = departmentRepository.findById(employeeRequestDto.getDepartmentId()).orElseThrow(()-> new ResourceNotFoundException("Department not found"));
+        Department department = departmentRepository.findById(employeeRequestDto.getDepartmentId()).orElseThrow(() -> new ResourceNotFoundException("Department not found"));
         Employee employee = employeeMapper.toEntity(employeeRequestDto, department);
         Employee createdEmployee = employeeRepository.save(employee);
         return employeeMapper.toResponseDto(createdEmployee);
@@ -42,15 +42,16 @@ public class EmployeeService {
 
         return employeeResponseDtos;
     }
+
     @Transactional(readOnly = true)
     public EmployeeResponseDto getEmployeeById(Long id) {
-        Employee employee = employeeRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Employee not found"));
+        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Employee not found"));
         return employeeMapper.toResponseDto(employee);
     }
 
     public EmployeeResponseDto updateEmployee(Long id, EmployeeRequestDto employeeRequestDto) {
-        Employee employee = employeeRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Employee not found"));
-        Department department = departmentRepository.findById(employeeRequestDto.getDepartmentId()).orElseThrow(()-> new ResourceNotFoundException("Department not found"));
+        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Employee not found"));
+        Department department = departmentRepository.findById(employeeRequestDto.getDepartmentId()).orElseThrow(() -> new ResourceNotFoundException("Department not found"));
 
         employee.setFirstName(employeeRequestDto.getFirstName());
         employee.setLastName(employeeRequestDto.getLastName());
@@ -64,7 +65,7 @@ public class EmployeeService {
     }
 
     public void deleteEmployee(Long id) {
-        Employee employee = employeeRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Employee not found"));
+        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Employee not found"));
         employeeRepository.delete(employee);
     }
 

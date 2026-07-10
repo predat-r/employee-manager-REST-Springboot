@@ -44,9 +44,10 @@ public class DepartmentService {
 
 
     }
-    public DepartmentResponseDto updateDepartment(Long id, DepartmentRequestDto requestDto){
 
-        Department department = departmentRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Department not found"));
+    public DepartmentResponseDto updateDepartment(Long id, DepartmentRequestDto requestDto) {
+
+        Department department = departmentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Department not found"));
         if (departmentRepository.existsByNameIgnoreCaseAndIdNot(requestDto.getName(), id)) {
             throw new DuplicateResourceException("Department with this name already exists");
         }
@@ -56,8 +57,8 @@ public class DepartmentService {
         return departmentMapper.toResponseDto(updatedDepartment);
     }
 
-    public void deleteDepartment(Long id){
-        Department department = departmentRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Department not found"));
+    public void deleteDepartment(Long id) {
+        Department department = departmentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Department not found"));
         departmentRepository.delete(department);
     }
 
