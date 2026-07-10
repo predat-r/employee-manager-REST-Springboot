@@ -28,8 +28,8 @@ public class DepartmentController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<DepartmentResponseDto>> getAllDepartments(@RequestParam @Min(0) int page, @RequestParam @Min(1) @Max(100) int size) {
-        Page<DepartmentResponseDto> departmentResponseDtos = departmentService.getAllDepartments(page,size);
+    public ResponseEntity<Page<DepartmentResponseDto>> getAllDepartments(@RequestParam(defaultValue = "0") @Min(0) int page, @RequestParam(defaultValue = "10") @Min(1) @Max(100) int size) {
+        Page<DepartmentResponseDto> departmentResponseDtos = departmentService.getAllDepartments(page, size);
         return ResponseEntity.ok().body(departmentResponseDtos);
     }
 

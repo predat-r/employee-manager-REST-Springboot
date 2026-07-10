@@ -28,7 +28,7 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<EmployeeResponseDto>> getAllEmployees(@RequestParam @Min(0) int page, @RequestParam @Min(1) @Max(100) int size) {
+    public ResponseEntity<Page<EmployeeResponseDto>> getAllEmployees(@RequestParam(defaultValue = "0") @Min(0) int page, @RequestParam(defaultValue = "10") @Min(1) @Max(100) int size) {
         Page<EmployeeResponseDto> employeeResponseDtos = employeeService.getAllEmployees(page, size);
         return ResponseEntity.ok().body(employeeResponseDtos);
     }
