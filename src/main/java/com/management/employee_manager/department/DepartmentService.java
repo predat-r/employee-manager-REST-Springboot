@@ -1,6 +1,7 @@
 package com.management.employee_manager.department;
 
 import com.management.employee_manager.common.exception.DuplicateResourceException;
+import com.management.employee_manager.common.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -37,13 +38,18 @@ public class DepartmentService {
 
 
     public DepartmentResponseDto getDepartmentById(Long id) {
-        Department department = departmentRepository.findById(id).orElseThrow();
+
+        Department department = departmentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Department not found"));
         return departmentMapper.toResponseDto(department);
 
 
     }
     public DepartmentResponseDto updateDepartment(Long id, DepartmentRequestDto requestDto){
-        Department department = departmentRepository.findById(id).orElseThrow();
+
+        Department department = departmentRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Department not found"));
+        if (departmentRepository.existsByNameIgnoreCaseAndIdNot(requestDto.getName(), id)) {
+            throw new DuplicateResourceException("Department with this name already exists");
+        }
         department.setDescription(requestDto.getDescription());
         department.setName(requestDto.getName());
         Department updatedDepartment = departmentRepository.save(department);
@@ -51,7 +57,7 @@ public class DepartmentService {
     }
 
     public void deleteDepartment(Long id){
-        Department department = departmentRepository.findById(id).orElseThrow();
+        Department department = departmentRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Department not found"));
         departmentRepository.delete(department);
     }
 
