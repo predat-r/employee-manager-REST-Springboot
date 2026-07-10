@@ -10,10 +10,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
-import java.util.ArrayList;
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class EmployeeService {
@@ -35,7 +31,7 @@ public class EmployeeService {
 
     @Transactional(readOnly = true)
     public Page<EmployeeResponseDto> getAllEmployees(int page, int size) {
-        Page<Employee> employees = employeeRepository.findAll(PageRequest.of(page,size));
+        Page<Employee> employees = employeeRepository.findAll(PageRequest.of(page, size));
 
         return employees.map(employeeMapper::toResponseDto);
     }
