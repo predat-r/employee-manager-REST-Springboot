@@ -1,5 +1,6 @@
 package com.management.employee_manager.employee;
 
+import com.management.employee_manager.common.exception.ResourceNotFoundException;
 import com.management.employee_manager.department.Department;
 import com.management.employee_manager.department.DepartmentRepository;
 import org.junit.jupiter.api.Test;
@@ -7,10 +8,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -58,7 +61,7 @@ class EmployeeServiceTest {
         when(departmentRepository.findById(1L)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> employeeService.createEmployee(requestDto))
-                .isInstanceOf(NoSuchElementException.class);
+                .isInstanceOf(ResourceNotFoundException.class);
     }
 
     @Test
@@ -66,13 +69,16 @@ class EmployeeServiceTest {
         Department department = new Department("Engineering", "Software development");
         Employee employee = employee(department);
         EmployeeResponseDto responseDto = responseDto();
+        PageRequest pageRequest = PageRequest.of(0, 1);
 
-        when(employeeRepository.findAll()).thenReturn(List.of(employee));
+        when(employeeRepository.findAll(pageRequest)).thenReturn(new PageImpl<>(List.of(employee)));
         when(employeeMapper.toResponseDto(employee)).thenReturn(responseDto);
 
-        List<EmployeeResponseDto> result = employeeService.getAllEmployees();
+        Page<EmployeeResponseDto> result = employeeService.getAllEmployees(0, 1);
 
-        assertThat(result).containsExactly(responseDto);
+        assertThat(result.getContent()).containsExactly(responseDto);
+        assertThat(result.getNumber()).isZero();
+        assertThat(result.getSize()).isEqualTo(1);
     }
 
     @Test

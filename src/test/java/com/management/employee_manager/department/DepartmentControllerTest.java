@@ -3,6 +3,8 @@ package com.management.employee_manager.department;
 import com.management.employee_manager.common.exception.GlobalExceptionHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -74,15 +76,17 @@ class DepartmentControllerTest {
 
     @Test
     void getAllDepartmentsReturnsDepartments() throws Exception {
-        when(departmentService.getAllDepartments()).thenReturn(List.of(
+        when(departmentService.getAllDepartments(0, 2)).thenReturn(new PageImpl<>(List.of(
                 new DepartmentResponseDto(1L, "HR", "Human Resources"),
                 new DepartmentResponseDto(2L, "Engineering", "Software development")
-        ));
+        ), PageRequest.of(0, 2), 2));
 
-        mockMvc.perform(get("/api/departments"))
+        mockMvc.perform(get("/api/departments")
+                        .param("page", "0")
+                        .param("size", "2"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].name").value("HR"))
-                .andExpect(jsonPath("$[1].name").value("Engineering"));
+                .andExpect(jsonPath("$.content[0].name").value("HR"))
+                .andExpect(jsonPath("$.content[1].name").value("Engineering"));
     }
 
     @Test

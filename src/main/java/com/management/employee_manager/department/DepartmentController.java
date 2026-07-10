@@ -1,17 +1,20 @@
 package com.management.employee_manager.department;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 
 @RestController
 @RequestMapping("/api/departments")
 @RequiredArgsConstructor
+@Validated
 public class DepartmentController {
     private final DepartmentService departmentService;
 
@@ -25,8 +28,8 @@ public class DepartmentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<DepartmentResponseDto>> getAllDepartments() {
-        List<DepartmentResponseDto> departmentResponseDtos = departmentService.getAllDepartments();
+    public ResponseEntity<Page<DepartmentResponseDto>> getAllDepartments(@RequestParam @Min(0) int page, @RequestParam @Min(1) @Max(100) int size) {
+        Page<DepartmentResponseDto> departmentResponseDtos = departmentService.getAllDepartments(page,size);
         return ResponseEntity.ok().body(departmentResponseDtos);
     }
 

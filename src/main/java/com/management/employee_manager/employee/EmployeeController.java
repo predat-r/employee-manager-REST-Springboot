@@ -2,16 +2,19 @@ package com.management.employee_manager.employee;
 
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/employees")
 @RequiredArgsConstructor
+@Validated
 public class EmployeeController {
 
     private final EmployeeService employeeService;
@@ -25,15 +28,14 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public ResponseEntity<List<EmployeeResponseDto>> getAllEmployees() {
-        List<EmployeeResponseDto> employeeResponseDtos = employeeService.getAllEmployees();
+    public ResponseEntity<Page<EmployeeResponseDto>> getAllEmployees(@RequestParam @Min(0) int page, @RequestParam @Min(1) @Max(100) int size) {
+        Page<EmployeeResponseDto> employeeResponseDtos = employeeService.getAllEmployees(page, size);
         return ResponseEntity.ok().body(employeeResponseDtos);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<EmployeeResponseDto> getEmployeeById(@PathVariable Long id) {
-        EmployeeResponseDto employeeResponseDto =
-                employeeService.getEmployeeById(id);
+        EmployeeResponseDto employeeResponseDto = employeeService.getEmployeeById(id);
 
         return ResponseEntity.ok(employeeResponseDto);
     }

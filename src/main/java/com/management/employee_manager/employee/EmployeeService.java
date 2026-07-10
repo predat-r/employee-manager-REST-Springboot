@@ -5,6 +5,8 @@ import com.management.employee_manager.common.exception.ResourceNotFoundExceptio
 import com.management.employee_manager.department.Department;
 import com.management.employee_manager.department.DepartmentRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,15 +34,10 @@ public class EmployeeService {
     }
 
     @Transactional(readOnly = true)
-    public List<EmployeeResponseDto> getAllEmployees() {
-        List<Employee> employees = employeeRepository.findAll();
-        List<EmployeeResponseDto> employeeResponseDtos = new ArrayList<>();
+    public Page<EmployeeResponseDto> getAllEmployees(int page, int size) {
+        Page<Employee> employees = employeeRepository.findAll(PageRequest.of(page,size));
 
-        for (Employee employee : employees) {
-            employeeResponseDtos.add(employeeMapper.toResponseDto(employee));
-        }
-
-        return employeeResponseDtos;
+        return employees.map(employeeMapper::toResponseDto);
     }
 
     @Transactional(readOnly = true)

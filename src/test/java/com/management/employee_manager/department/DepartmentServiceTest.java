@@ -1,14 +1,17 @@
 package com.management.employee_manager.department;
 
+import com.management.employee_manager.common.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -52,14 +55,17 @@ class DepartmentServiceTest {
         Department engineering = new Department("Engineering", "Software development");
         DepartmentResponseDto hrDto = new DepartmentResponseDto(1L, "HR", "Human Resources");
         DepartmentResponseDto engineeringDto = new DepartmentResponseDto(2L, "Engineering", "Software development");
+        PageRequest pageRequest = PageRequest.of(0, 2);
 
-        when(departmentRepository.findAll()).thenReturn(List.of(hr, engineering));
+        when(departmentRepository.findAll(pageRequest)).thenReturn(new PageImpl<>(List.of(hr, engineering)));
         when(departmentMapper.toResponseDto(hr)).thenReturn(hrDto);
         when(departmentMapper.toResponseDto(engineering)).thenReturn(engineeringDto);
 
-        List<DepartmentResponseDto> result = departmentService.getAllDepartments();
+        Page<DepartmentResponseDto> result = departmentService.getAllDepartments(0, 2);
 
-        assertThat(result).containsExactly(hrDto, engineeringDto);
+        assertThat(result.getContent()).containsExactly(hrDto, engineeringDto);
+        assertThat(result.getNumber()).isZero();
+        assertThat(result.getSize()).isEqualTo(2);
     }
 
     @Test
@@ -80,7 +86,7 @@ class DepartmentServiceTest {
         when(departmentRepository.findById(99L)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> departmentService.getDepartmentById(99L))
-                .isInstanceOf(NoSuchElementException.class);
+                .isInstanceOf(ResourceNotFoundException.class);
     }
 
     @Test

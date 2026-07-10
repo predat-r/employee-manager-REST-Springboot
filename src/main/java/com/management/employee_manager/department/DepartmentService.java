@@ -3,10 +3,9 @@ package com.management.employee_manager.department;
 import com.management.employee_manager.common.exception.DuplicateResourceException;
 import com.management.employee_manager.common.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -25,14 +24,9 @@ public class DepartmentService {
         return departmentMapper.toResponseDto(savedDepartment);
     }
 
-    public List<DepartmentResponseDto> getAllDepartments() {
-        List<Department> departments = departmentRepository.findAll();
-        List<DepartmentResponseDto> departmentResponseDtos = new ArrayList<>();
-        for (Department department : departments) {
-            departmentResponseDtos.add(departmentMapper.toResponseDto(department));
-        }
-
-        return departmentResponseDtos;
+    public Page<DepartmentResponseDto> getAllDepartments(int page, int size) {
+        Page<Department> departments = departmentRepository.findAll(PageRequest.of(page, size));
+        return departments.map(departmentMapper::toResponseDto);
 
     }
 

@@ -3,6 +3,8 @@ package com.management.employee_manager.employee;
 import com.management.employee_manager.common.exception.GlobalExceptionHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -81,12 +83,18 @@ class EmployeeControllerTest {
 
     @Test
     void getAllEmployeesReturnsEmployees() throws Exception {
-        when(employeeService.getAllEmployees()).thenReturn(List.of(responseDto()));
+        when(employeeService.getAllEmployees(0, 1)).thenReturn(new PageImpl<>(
+                List.of(responseDto()),
+                PageRequest.of(0, 1),
+                1
+        ));
 
-        mockMvc.perform(get("/api/employees"))
+        mockMvc.perform(get("/api/employees")
+                        .param("page", "0")
+                        .param("size", "1"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].firstName").value("Ali"))
-                .andExpect(jsonPath("$[0].departmentName").value("Engineering"));
+                .andExpect(jsonPath("$.content[0].firstName").value("Ali"))
+                .andExpect(jsonPath("$.content[0].departmentName").value("Engineering"));
     }
 
     @Test
