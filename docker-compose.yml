@@ -1,6 +1,13 @@
 services:
   spring-boot-admin:
-    image: codecentric/spring-boot-admin:latest
+    image: codecentric/spring-boot-admin:3.2.3
     container_name: spring-boot-admin
     ports:
       - "9090:8080"
+    environment:
+      JAVA_TOOL_OPTIONS: "-XX:-UseContainerSupport"
+      SPRING_APPLICATION_JSON: >
+        {
+          "management.metrics.binders.processor.enabled": false,
+          "spring.thymeleaf.check-template-location": false
+        }
