@@ -1,0 +1,41 @@
+spring:
+  application:
+    name: employee-manager
+
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    open-in-view: false
+
+  liquibase:
+    change-log: classpath:db/changelog/changelog-master.yaml
+
+  boot:
+    admin:
+      client:
+        url: http://localhost:9090
+
+logging:
+  level:
+    sql: debug
+    liquibase: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+  endpoint:
+    health:
+      show-details: always
+    env:
+      show-values: always
+    configprops:
+      show-values: always
